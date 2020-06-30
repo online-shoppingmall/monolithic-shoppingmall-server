@@ -2,9 +2,11 @@ package shoppingmall.monolithicserver.model.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import shoppingmall.monolithicserver.model.enums.ProductStatus;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Created by sehajyang
@@ -35,7 +37,7 @@ public class Product extends BaseEntity{
     private Set<Category> categories = new LinkedHashSet<>();
 
     @OneToMany
-    private Set<ProductOptionGroups> productOptionGroups = new LinkedHashSet<>();
+    private Set<ProductOptionsGroup> productOptionGroups = new LinkedHashSet<>();
 
     @OneToOne
     @JoinColumn(name="file_id")
