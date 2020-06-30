@@ -35,7 +35,7 @@ public class Product extends BaseEntity{
     private Long stockCount;
     private Long saveStockCount;
 
-    @ManyToMany(mappedBy = "")
+    @ManyToMany(mappedBy = "products")
     private Set<Category> categories = new LinkedHashSet<>();
 
     @OneToMany
