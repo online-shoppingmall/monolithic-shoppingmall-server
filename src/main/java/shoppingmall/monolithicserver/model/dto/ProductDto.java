@@ -36,6 +36,8 @@ public class ProductDto {
     }
 
     @NoArgsConstructor
+    @Getter
+    @Setter
     public static class ProductList extends ProductDto {
         public ProductList(Product product) {
             super(product);
@@ -43,6 +45,7 @@ public class ProductDto {
     }
 
     @Getter
+    @Setter
     @NoArgsConstructor
     public static class ProductUpsert {
         private String name;

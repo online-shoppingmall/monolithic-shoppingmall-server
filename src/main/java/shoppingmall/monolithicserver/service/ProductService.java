@@ -3,6 +3,7 @@ package shoppingmall.monolithicserver.service;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import shoppingmall.monolithicserver.model.dto.ProductDto;
 import shoppingmall.monolithicserver.model.entity.Product;
 import shoppingmall.monolithicserver.repository.ProductRepository;
@@ -20,11 +21,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
-    ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     public List<ProductDto> findAllProducts() {
-        List<Product> products = Optional.of(productRepository.findAll())
-                .orElseThrow(() -> new EntityNotFoundException("Not Found Products"));
+        List<Product> products = Optional.of(productRepository.findAll()).orElseThrow(
+                () -> new EntityNotFoundException("Not Found Products"));
 
         return products
                 .stream()
@@ -32,6 +33,7 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public List<Long> registerProducts(List<ProductDto.ProductUpsert> productsDto) {
         List<Product> products;
         products = productsDto
@@ -47,4 +49,19 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public void updatedProduct(Long productId, ProductDto.ProductUpsert productDto) {
+        Product product = new Product(productId, productDto);
+        productRepository.save(product);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteProduct(Long productId) {
+        Product product = productRepository.findById(productId).orElseThrow(
+                () -> new EntityNotFoundException("Not Found ProductId " + productId)
+        );
+
+        product.deleteData();
+        productRepository.save(product);
+    }
 }
