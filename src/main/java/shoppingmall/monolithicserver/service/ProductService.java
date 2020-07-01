@@ -26,8 +26,25 @@ public class ProductService {
         List<Product> products = Optional.of(productRepository.findAll())
                 .orElseThrow(() -> new EntityNotFoundException("Not Found Products"));
 
-        return products.stream()
+        return products
+                .stream()
                 .map(ProductDto.ProductList::new)
                 .collect(Collectors.toList());
     }
+
+    public List<Long> registerProducts(List<ProductDto.ProductUpsert> productsDto) {
+        List<Product> products;
+        products = productsDto
+                .stream()
+                .map(item -> new Product(null, item))
+                .collect(Collectors.toList());
+
+        productRepository.saveAll(products);
+
+        return products
+                .stream()
+                .map(Product::getId)
+                .collect(Collectors.toList());
+    }
+
 }

@@ -52,15 +52,5 @@ public class ProductDto {
         private Long discountPercent;
         private ProductStatus status;
         private Boolean isExposure;
-
-        public ProductUpsert(Product product) {
-            this.name = product.getName();
-            this.description = product.getDescription();
-            this.price = product.getPrice();
-            this.discountPercent = product.getDiscountPercent();
-            this.stockCount = product.getStockCount();
-            this.status = product.getStatus();
-            this.isExposure = product.getIsExposure();
-        }
     }
 }
