@@ -2,6 +2,9 @@ package shoppingmall.monolithicserver.model.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import shoppingmall.monolithicserver.common.Utils;
+import shoppingmall.monolithicserver.model.dto.ProductDto;
 import shoppingmall.monolithicserver.model.enums.ProductStatus;
 
 import javax.persistence.*;
@@ -13,9 +16,10 @@ import java.util.Set;
  * DateTime : 2020/06/29
  */
 
+@Getter
+@Setter
 @Entity
 @Table(name="product")
-@Getter
 @NoArgsConstructor
 public class Product extends BaseEntity{
 
@@ -33,11 +37,11 @@ public class Product extends BaseEntity{
     private Long stockCount;
     private Long saveStockCount;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "products")
     private Set<Category> categories = new LinkedHashSet<>();
 
     @OneToMany
-    private Set<ProductOptionsGroup> productOptionGroups = new LinkedHashSet<>();
+    private Set<ProductOptionGroup> productOptionGroups = new LinkedHashSet<>();
 
     @OneToOne
     @JoinColumn(name="file_id")
@@ -50,4 +54,15 @@ public class Product extends BaseEntity{
 
     @Column(columnDefinition = "boolean default true")
     private Boolean isExposure;
+
+    public Product(Long productId, ProductDto.ProductUpsert productDto) {
+        if(Utils.isNotEmpty(productId)){
+            this.id = productId;
+        }
+        this.name = productDto.getName();
+        this.description = productDto.getDescription();
+        this.price = productDto.getPrice();
+        this.discountPercent = productDto.getDiscountPercent();
+        this.stockCount = productDto.getStockCount();
+    }
 }

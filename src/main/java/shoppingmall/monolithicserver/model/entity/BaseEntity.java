@@ -19,17 +19,14 @@ import java.time.LocalDateTime;
 public abstract class BaseEntity {
 
     @JsonIgnore
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name="created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @JsonIgnore
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name="updated_at", updatable = false)
     private LocalDateTime updatedAt;
 
     @JsonIgnore
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name="delete_at", updatable = false)
     private LocalDateTime deletedAt;
 
@@ -46,5 +43,9 @@ public abstract class BaseEntity {
         }
         this.updatedAt = LocalDateTime.now();
         this.deletedAt = null;
+    }
+
+    public void deleteData() {
+        this.deletedAt = LocalDateTime.now();
     }
 }

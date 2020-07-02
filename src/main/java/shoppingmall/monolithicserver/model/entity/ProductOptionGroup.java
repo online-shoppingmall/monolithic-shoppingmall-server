@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Created by sehajyang
@@ -12,23 +14,19 @@ import javax.persistence.*;
  */
 
 @Getter
-@Setter
 @Entity
-@Table(name="brand")
+@Table(name="product_option_group")
 @NoArgsConstructor
-public class Brand {
+public class ProductOptionGroup extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="brand_id")
+    @Column(name="product_option_group_id")
     private Long id;
 
     private String name;
 
-    @Column(length = 1000)
-    private String description;
-
-    @OneToOne
-    @JoinColumn(name="file_id")
-    private File file;
+    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @JoinColumn(name = "product_option_id")
+    private Set<ProductOption> productOptions = new LinkedHashSet<>();
 }

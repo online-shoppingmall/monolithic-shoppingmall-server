@@ -3,6 +3,7 @@ package shoppingmall.monolithicserver.model.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import shoppingmall.monolithicserver.model.enums.FileType;
 
 import javax.persistence.*;
 
@@ -14,21 +15,20 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name="brand")
+@Table(name="file")
 @NoArgsConstructor
-public class Brand {
+public class File extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="brand_id")
+    @Column(name="file_id")
     private Long id;
 
     private String name;
+    private String url;
+    private Long size;
 
-    @Column(length = 1000)
-    private String description;
-
-    @OneToOne
-    @JoinColumn(name="file_id")
-    private File file;
+    @Enumerated(EnumType.STRING)
+    private FileType type;
+    private String extension;
 }
